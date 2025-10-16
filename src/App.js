@@ -1,48 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import axios from 'axios';
+import React, { useState } from 'react';
+import Button from './components/Button';
 import './App.css';
 
 function App() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [clickCount, setClickCount] = useState(0);
 
-  // Получаем текущую дату с помощью Day.js
-  const currentDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
-
-  // Получаем данные из API с помощью Axios
-  useEffect(() => {
-    axios.get("https://jsonplaceholder.typicode.com/posts/1")
-      .then(response => {
-        setData(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Ошибка при получении данных:", error);
-        setLoading(false);
-      });
-  }, []);
+  const handleButtonClick = () => {
+    setClickCount(clickCount + 1);
+  };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {/* Отображаем текущую дату */}
-        <h1>Текущая дата и время:</h1>
-        <p>{currentDate}</p>
-
-        {/* Отображаем данные из API */}
-        <h1>Данные из API:</h1>
-        {loading ? (
-          <p>Загрузка...</p>
-        ) : data ? (
-          <div style={{ textAlign: 'left' }}>
-            <h3>{data.title}</h3>
-            <p>{data.body}</p>
-          </div>
-        ) : (
-          <p>Не удалось загрузить данные</p>
-        )}
-      </header>
+    <div
+      className="app-container"
+      style={{
+        backgroundColor: clickCount % 2 === 0 ? '#f4f4f4' : '#ffebcd',
+      }}
+    >
+      <Button onClick={handleButtonClick} />
     </div>
   );
 }
